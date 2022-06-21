@@ -47,17 +47,17 @@ import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 })
 export class NgxSearchFieldComponent implements OnDestroy {
   // inputs
-  @Input() arr: any[] = [];
-  @Input() appearance: MatFormFieldAppearance = 'outline';
-  @Input() fieldLabel: string = 'Search';
-  @Input() fieldToDisplay: string = '';
+  @Input() public arr: any[] = [];
+  @Input() public appearance: MatFormFieldAppearance = 'outline';
+  @Input() public fieldLabel: string = 'Search';
+  @Input() public fieldToDisplay: string = '';
 
   // outputs
-  @Output() submitValue: EventEmitter<any> = new EventEmitter();
+  @Output() public submitValue: EventEmitter<any> = new EventEmitter();
 
   // component state
-  inputControl: FormControl = new FormControl('');
-  inputSubscription: Subscription;
+  public inputControl: FormControl = new FormControl('');
+  private inputSubscription: Subscription;
 
   constructor() {
     this.inputSubscription = this.inputControl.valueChanges
@@ -69,11 +69,11 @@ export class NgxSearchFieldComponent implements OnDestroy {
       });
   }
 
-  submitValueFunc = (value: any) => {
+  public submitValueFunc = (value: any): void => {
     this.submitValue.emit(value)
   }
 
-  clearControl = () => {
+  public clearControl = (): void => {
     this.inputControl.setValue('');
     this.submitValue.emit(null)
   }
