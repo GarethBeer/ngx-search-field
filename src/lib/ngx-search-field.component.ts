@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
@@ -43,9 +44,9 @@ import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
       </mat-form-field>
     </form>
   `,
-  styles: ['form { width:100%; padding:0.5rem} .mat-icon:hover {curser:pointer}'],
+  styles: ['form { width:100%; padding:0.5rem} .mat-icon:hover {cursor:pointer}'],
 })
-export class NgxSearchFieldComponent implements OnDestroy {
+export class NgxSearchFieldComponent implements OnDestroy, OnInit {
   // inputs
   @Input() public arr: any[] = [];
   @Input() public appearance: MatFormFieldAppearance = 'outline';
@@ -57,18 +58,20 @@ export class NgxSearchFieldComponent implements OnDestroy {
 
   // component state
   public inputControl: FormControl = new FormControl('');
-  private inputSubscription: Subscription;
+  private inputSubscription: Subscription = new Subscription();
 
   constructor() {
-    this.inputSubscription = this.inputControl.valueChanges
+
+  }
+ngOnInit(): void {
+  this.inputSubscription = this.inputControl.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((input: string) => {
         if (!input) {
           this.submitValue.emit(null);
         }
       });
-  }
-
+}
   public submitValueFunc = (value: any): void => {
     this.submitValue.emit(value)
   }
